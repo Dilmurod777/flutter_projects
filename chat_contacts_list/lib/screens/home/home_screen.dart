@@ -5,34 +5,27 @@ import 'package:chat_contacts_list/screens/home/components/header/header.dart';
 import 'package:chat_contacts_list/screens/home/components/recent_contacts/recent_contacts_slider.dart';
 import 'package:chat_contacts_list/screens/home/components/search_bar/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   List<User> _contactsList = [];
   List<User> _searchedList = [];
   User _myProfileData;
   bool _showDetailedCount;
   TextEditingController _searchController;
 
-  @override
-  void initState() {
-    super.initState();
-    this._contactsList = contacts;
-    this._searchedList = contacts;
-    this._myProfileData = myProfile;
-    _showDetailedCount = false;
-    _searchController = TextEditingController();
-  }
+  bool _showScrollEffect = false;
+  bool _isScrollingDown = false;
+  ScrollController _scrollController = new ScrollController();
 
-  toggleShowDetailedCount() {
-    this.setState(() {
-      _showDetailedCount = !_showDetailedCount;
-    });
-  }
+  Animation<double> _sliderAnimation;
+  AnimationController _sliderAnimationController;
 
   onSearchChangedHandler(value) {
     if (value == '') {
@@ -61,26 +54,102 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  setShowDetailedCount(value) {
+    this.setState(() {
+      _showDetailedCount = value;
+    });
+  }
+
+  myScroll() async {
+    _scrollController.addListener(() {
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (!_isScrollingDown) {
+          scrollDownEffect();
+        }
+      }
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (_isScrollingDown) {
+          scrollUpEffect();
+        }
+      }
+    });
+  }
+
+  scrollDownEffect() {
+    this.setState(() {
+      _isScrollingDown = true;
+      _showScrollEffect = true;
+    });
+
+    _sliderAnimationController.forward();
+  }
+
+  scrollUpEffect() {
+    this.setState(() {
+      _isScrollingDown = false;
+      _showScrollEffect = false;
+    });
+    _sliderAnimationController.reverse();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this._contactsList = contacts;
+    this._searchedList = contacts;
+    this._myProfileData = myProfile;
+    _showDetailedCount = false;
+    _searchController = TextEditingController();
+
+    _sliderAnimationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 250),
+    );
+    _sliderAnimation =
+        Tween<double>(begin: 1, end: 0).animate(_sliderAnimationController)
+          ..addListener(() {
+            setState(() {});
+          });
+
+    myScroll();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(() {});
+    _sliderAnimationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: Padding(
+        padding: EdgeInsets.only(top: 44),
         child: Column(
           children: <Widget>[
-            Header(),
+            Header(animation: _sliderAnimation),
             RecentContactsSlider(
-              contacts: this._contactsList,
-              myProfile: this._myProfileData,
-            ),
+                showScrollEffect: _showScrollEffect,
+                contacts: this._contactsList,
+                myProfile: this._myProfileData,
+                sliderAnimation: _sliderAnimation),
             SearchBar(
                 contacts: this._contactsList,
                 showDetailedCount: this._showDetailedCount,
-                toggleShowDetailedCount: this.toggleShowDetailedCount,
+                setShowDetailedCount: this.setShowDetailedCount,
                 searchController: this._searchController,
                 onSearchChange: this.onSearchChangedHandler),
-            Chat(contacts: this._searchedList)
+            Chat(
+              contacts: this._searchedList,
+              scrollController: _scrollController,
+              scrollUpEffect: scrollUpEffect,
+              showScrollEffect: _showScrollEffect,
+            )
           ],
         ),
       ),

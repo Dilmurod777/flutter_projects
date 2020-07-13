@@ -1,12 +1,22 @@
 import 'package:chat_contacts_list/modals/user.dart';
 import 'package:chat_contacts_list/screens/home/components/chat/chat_element/chat_element.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Chat extends StatelessWidget {
   final List<User> contacts;
+  final ScrollController scrollController;
+  final Function scrollUpEffect;
+  final bool showScrollEffect;
 
-  const Chat({Key key, this.contacts}) : super(key: key);
-
+  const Chat({
+    Key key,
+    this.contacts,
+    this.scrollController,
+    this.scrollUpEffect,
+    this.showScrollEffect,
+  }) : super(key: key);
 
   sortedChart() {
     final unreadContacts = [];
@@ -19,7 +29,6 @@ class Chat extends StatelessWidget {
         readContacts.add(contact);
       }
     });
-
 
     // sort by number of unread messages
     unreadContacts.sort((a, b) {
@@ -44,8 +53,22 @@ class Chat extends StatelessWidget {
     final chatElements = sortedChart().map((user) => ChatElement(user: user));
 
     return Expanded(
-      child: ListView(
-        children: <Widget>[...chatElements],
+      child: NotificationListener<ScrollNotification>(
+        // ignore: missing_return
+        onNotification: (scrollNotification) {
+          if (showScrollEffect) {
+            if (scrollNotification is OverscrollNotification) {
+              if (scrollNotification.overscroll < 0) {
+                scrollUpEffect();
+              }
+            }
+          }
+        },
+        child: ListView(
+          controller: scrollController,
+          padding: EdgeInsets.only(top: 15),
+          children: <Widget>[...chatElements],
+        ),
       ),
     );
   }

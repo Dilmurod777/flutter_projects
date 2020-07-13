@@ -1,35 +1,48 @@
 import 'dart:ui';
 import 'package:chat_contacts_list/constraints.dart';
 import 'package:chat_contacts_list/modals/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
   final User user;
+  final bool showScrollEffect;
+  final Animation animation;
 
-  const MyProfile({Key key, this.user}) : super(key: key);
+  const MyProfile({
+    Key key,
+    this.user,
+    this.showScrollEffect,
+    this.animation,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 15.0),
+      margin: EdgeInsets.only(right: 12 + 4 * animation.value),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               Container(
-                height: 86,
-                width: 86,
+                height: 66 + 20 * animation.value,
+                width: 66 + 20 * animation.value,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(user.imgUrl),
                     fit: BoxFit.cover,
                   ),
-                  borderRadius: BorderRadius.circular(33),
+                  borderRadius: showScrollEffect
+                      ? BorderRadius.circular(25)
+                      : BorderRadius.circular(33),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(33),
+                  borderRadius: showScrollEffect
+                      ? BorderRadius.circular(25)
+                      : BorderRadius.circular(33),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                     child: Container(
@@ -41,8 +54,8 @@ class MyProfile extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: -11.5,
-                left: 21,
+                bottom: -11 + 32.5 * (1 - animation.value),
+                left: 11 + 10 * animation.value,
                 child: Container(
                   height: 23,
                   width: 44,
@@ -62,8 +75,17 @@ class MyProfile extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 15.0),
-          Text('Новый лайков')
+          SizedBox(height: 15.0 * animation.value),
+          Container(
+            height: 20 * animation.value,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                'Новых лайков',
+                style: kRecentContactsBottomTextStyle,
+              ),
+            ),
+          ),
         ],
       ),
     );

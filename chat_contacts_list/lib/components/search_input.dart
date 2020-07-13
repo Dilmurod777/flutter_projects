@@ -10,31 +10,31 @@ class SearchInput extends StatelessWidget {
   final bool disabled;
   final bool isSearchFocused;
   final bool showDetailedCount;
-  final Function onCountClick;
   final Function onChange;
-  final Function onTap;
+  final Function onSearchFocused;
+  final Function onToggleShowDetailedCount;
   final TextEditingController controller;
 
-  const SearchInput(
-      {Key key,
-      this.icon,
-      this.text,
-      this.count,
-      this.addRightMargin,
-      this.disabled,
-      this.isSearchFocused = false,
-      this.showDetailedCount = false,
-      this.onCountClick,
-      this.onChange,
-      this.onTap,
-      this.controller})
-      : super(key: key);
+  const SearchInput({
+    Key key,
+    this.icon,
+    this.text,
+    this.count,
+    this.addRightMargin,
+    this.disabled,
+    this.isSearchFocused = false,
+    this.showDetailedCount = false,
+    this.onChange,
+    this.onSearchFocused,
+    this.onToggleShowDetailedCount,
+    this.controller,
+  }) : super(key: key);
 
   Widget build(BuildContext context) {
     return Container(
       height: 39,
       margin: this.addRightMargin
-          ? EdgeInsets.only(right: 7, bottom: 7)
+          ? EdgeInsets.only(right: 7)
           : EdgeInsets.only(bottom: 7),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -48,7 +48,10 @@ class SearchInput extends StatelessWidget {
             onChanged: (value) {
               this.onChange(value);
             },
-            onTap: onTap,
+            onTap: (){
+//              this.onSearchFocused();
+              this.onToggleShowDetailedCount(true);
+            },
             readOnly: this.disabled,
             decoration: InputDecoration(
               prefixIcon: Icon(
@@ -66,14 +69,15 @@ class SearchInput extends StatelessWidget {
             right: 10,
             child: this.isSearchFocused
                 ? InkWell(
-                    onTap: (){
+                    onTap: () {
                       FocusScopeNode currentFocus = FocusScope.of(context);
 
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
                       }
 
-                      onTap();
+                      onSearchFocused();
+                      onToggleShowDetailedCount(false);
                     },
                     child: Container(
                       width: 23,

@@ -5,51 +5,71 @@ import 'package:flutter/material.dart';
 
 class RecentContactItem extends StatelessWidget {
   final User user;
+  final bool showScrollEffect;
+  final Animation animation;
 
-  const RecentContactItem({Key key, this.user}) : super(key: key);
+  const RecentContactItem({
+    Key key,
+    this.user,
+    this.showScrollEffect,
+    this.animation,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Widget onlineMarker = user.isOnline == true
-        ? OnlineMarker()
-        : Container();
+    final Widget onlineMarker =
+        user.isOnline == true ? OnlineMarker(isLarge: true) : Container();
 
     return Container(
-      margin: EdgeInsets.only(right: 15.0),
+      margin: EdgeInsets.only(right: 11 + 4 * animation.value),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               Container(
-                height: 86,
-                width: 86,
+                height: 66 + 20 * animation.value,
+                width: 66 + 20 * animation.value,
                 decoration: BoxDecoration(
                   image: DecorationImage(image: NetworkImage(user.imgUrl)),
-                  borderRadius: BorderRadius.circular(33),
+                  borderRadius: showScrollEffect
+                      ? BorderRadius.circular(25)
+                      : BorderRadius.circular(33),
                 ),
               ),
               onlineMarker,
-              Positioned(
-                bottom: -11.5,
-                left: 28,
-                child: Container(
-                  height: 23,
-                  width: 35,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF719CF7),
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                  child:
-                      Text("${user.popularity}%", style: kUserPopularityStyle),
-                ),
-              )
+              showScrollEffect
+                  ? Container()
+                  : Positioned(
+                      bottom: -11,
+                      left: 28,
+                      child: Container(
+                        height: 23,
+                        width: 35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF719CF7),
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        child: Text("${user.popularity}%",
+                            style: kUserPopularityStyle),
+                      ),
+                    )
             ],
           ),
-          SizedBox(height: 15.0),
-          Text(user.firstName)
+          SizedBox(height: 15.0 * animation.value),
+          Container(
+            height: 20 * animation.value,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                user.firstName,
+                style: kRecentContactsBottomTextStyle,
+              ),
+            ),
+          ),
         ],
       ),
     );

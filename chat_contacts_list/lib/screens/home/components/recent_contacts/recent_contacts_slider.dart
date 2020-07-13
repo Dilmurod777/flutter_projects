@@ -7,23 +7,41 @@ import 'package:flutter/material.dart';
 class RecentContactsSlider extends StatelessWidget {
   final List<User> contacts;
   final User myProfile;
+  final bool showScrollEffect;
+  final Animation sliderAnimation;
 
-  const RecentContactsSlider({Key key, this.contacts, this.myProfile})
+  const RecentContactsSlider(
+      {Key key,
+      this.contacts,
+      this.myProfile,
+      this.showScrollEffect,
+      this.sliderAnimation})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final recentContactsList =
-        contacts.map((user) => RecentContactItem(user: user));
+    final recentContactsList = contacts.map(
+      (user) => RecentContactItem(
+        user: user,
+        showScrollEffect: showScrollEffect,
+        animation: sliderAnimation,
+      ),
+    );
 
     return Padding(
-      padding: EdgeInsets.only(left: kHPadding),
+      padding: EdgeInsets.only(left: kHeaderLeftPadding),
       child: Container(
-        height: 120,
-        width: double.infinity,
+        height: 70 + 55 * sliderAnimation.value,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children: <Widget>[MyProfile(user: myProfile), ...recentContactsList],
+          children: <Widget>[
+            MyProfile(
+              user: myProfile,
+              showScrollEffect: showScrollEffect,
+              animation: sliderAnimation,
+            ),
+            ...recentContactsList,
+          ],
         ),
       ),
     );

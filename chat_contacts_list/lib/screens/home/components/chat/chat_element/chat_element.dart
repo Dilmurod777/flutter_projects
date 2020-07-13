@@ -16,12 +16,14 @@ class ChatElement extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-        left: kHPadding,
-        right: kHPadding,
+        left: kChatElLeftPadding,
+        right: kChatElRightPadding,
         top: kChatElTopPadding,
         bottom: kChatElBottomPadding,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -33,7 +35,7 @@ class ChatElement extends StatelessWidget {
                   child: Image.network(user.imgUrl),
                 ),
               ),
-              user.isOnline ? OnlineMarker() : Container(),
+              user.isOnline ? OnlineMarker(isLarge: false) : Container(),
             ],
           ),
           SizedBox(width: 16),
@@ -48,17 +50,16 @@ class ChatElement extends StatelessWidget {
                     SizedBox(width: 7),
                     user.isPinned
                         ? Padding(
-                            padding: EdgeInsets.only(top: 2),
+                            padding: EdgeInsets.only(top: 7),
                             child: Icon(
                               Icons.bookmark,
-                              size: 18,
+                              size: 22,
                               color: Color(0xFF719BF7),
                             ),
                           )
                         : Container()
                   ],
                 ),
-                SizedBox(height: 6),
                 Text(
                   "${user.history.last.text}",
                   style: TextStyle(

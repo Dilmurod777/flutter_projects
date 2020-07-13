@@ -1,20 +1,25 @@
 import 'package:chat_contacts_list/components/search_input.dart';
 import 'package:chat_contacts_list/constraints.dart';
 import 'package:chat_contacts_list/modals/user.dart';
+import 'package:chat_contacts_list/screens/home/components/search_bar/components/detailed_count_elements.dart';
+import 'package:chat_contacts_list/screens/home/components/search_bar/components/left_person_btn.dart';
+import 'package:chat_contacts_list/screens/home/components/search_bar/components/right_search_btn.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
   final List<User> contacts;
   final bool showDetailedCount;
-  final Function toggleShowDetailedCount;
+  final Function setShowDetailedCount;
   final Function onSearchChange;
   final TextEditingController searchController;
+  final GlobalKey<AnimatedListState> listKey;
 
   const SearchBar({
     Key key,
+    this.listKey,
     this.contacts,
     this.showDetailedCount,
-    this.toggleShowDetailedCount,
+    this.setShowDetailedCount,
     this.onSearchChange,
     this.searchController,
   }) : super(key: key);
@@ -26,7 +31,7 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   var isSearchFocused = false;
 
-  toggleSearchFocusedHandler(){
+  toggleSearchFocusedHandler() {
     this.setState(() {
       isSearchFocused = !isSearchFocused;
     });
@@ -35,9 +40,11 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: kHPadding,
-        vertical: kVPadding,
+      padding: EdgeInsets.only(
+        top: kSearchBarTopPadding,
+        bottom: kSearchBarBottomPadding,
+        left: kSearchBarLeftPadding,
+        right: kSearchBarRightPadding,
       ),
       child: Column(
         children: <Widget>[
@@ -46,20 +53,9 @@ class _SearchBarState extends State<SearchBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               isSearchFocused
-                  ? Container(
-                      width: 39,
-                      height: 39,
-                      margin: EdgeInsets.only(right: 7),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF9F9F9),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                        size: 25,
-                        color: Color(0xFF131313),
-                      ),
+                  ? LeftPersonBtn(
+                      showDetailedCount: widget.showDetailedCount,
+                      setShowDetailedCount: widget.setShowDetailedCount,
                     )
                   : Container(),
               Expanded(
@@ -70,59 +66,26 @@ class _SearchBarState extends State<SearchBar> {
                   addRightMargin: true,
                   disabled: false,
                   showDetailedCount: widget.showDetailedCount,
-                  onCountClick: widget.toggleShowDetailedCount,
                   onChange: widget.onSearchChange,
-                  onTap: toggleSearchFocusedHandler,
+                  onSearchFocused: toggleSearchFocusedHandler,
+                  onToggleShowDetailedCount: widget.setShowDetailedCount,
                   isSearchFocused: isSearchFocused,
                   controller: widget.searchController,
                 ),
               ),
               isSearchFocused
                   ? Container()
-                  : InkWell(
-                      onTap: () {},
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        width: 39,
-                        height: 39,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF9F9F9),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          Icons.search,
-                          size: 25,
-                          color: Color(0xFF131313),
-                        ),
-                      ),
+                  : RightSearchBtn(
+                      toggleSearchFocusedHandler: toggleSearchFocusedHandler,
                     )
             ],
           ),
-          widget.showDetailedCount == true
-              ? Column(
-                  children: <Widget>[
-                    SearchInput(
-                      icon: Icons.wifi_tethering,
-                      text: 'Только онлайн',
-                      count: widget.contacts
-                          .where((contact) => contact.isOnline)
-                          .length,
-                      addRightMargin: false,
-                      disabled: true,
-                    ),
-                    SearchInput(
-                      icon: Icons.bookmark_border,
-                      text: 'Избранные',
-                      count: widget.contacts
-                          .where((contact) => contact.isPinned)
-                          .length,
-                      addRightMargin: false,
-                      disabled: true,
-                    )
-                  ],
-                )
-              : Container(),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 350),
+            child: widget.showDetailedCount
+                ? DetailedCountElements(contacts: widget.contacts)
+                : Container(),
+          ),
         ],
       ),
     );

@@ -33,7 +33,7 @@ class _RecentContactsSliderState extends State<RecentContactsSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final heightDeltaFactor = widget.scrollDelta < 0 ? 5 : 50;
+    final heightDeltaFactor = widget.scrollDelta < 0 ? 5 : 20;
     final textScrollDelta =
         height > 110 ? widget.scrollDelta * 5 : 0;
 
@@ -41,7 +41,7 @@ class _RecentContactsSliderState extends State<RecentContactsSlider> {
       (user) => RecentContactItem(
           user: user,
           size: contactSize =
-              (contactSize + widget.scrollDelta).clamp(66.0, 86.0),
+              (contactSize + widget.scrollDelta / 2).clamp(66.0, 86.0),
           marginRight: marginRight =
               (marginRight + widget.scrollDelta).clamp(12.0, 16.0),
           sizedBoxHeight: sizedBoxHeight =

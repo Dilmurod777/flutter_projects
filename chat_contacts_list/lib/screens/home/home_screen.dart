@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
         this.setState(() {
           scrollPrevPos = scrollCurPos;
           scrollCurPos = _scrollController.position.pixels.toDouble();
-          scrollDeltaPos = (scrollPrevPos - scrollCurPos).roundToDouble();
+          scrollDeltaPos = scrollPrevPos - scrollCurPos;
         });
       }
     });
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen>
             RecentContactsSlider(
               contacts: this._contactsList,
               myProfile: this._myProfileData,
-              scrollDelta: scrollDeltaPos,
+              scrollDelta: scrollDeltaPos * 5,
             ),
             SearchBar(
               contacts: this._contactsList,

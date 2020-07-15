@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 
 class DetailedCountElements extends StatelessWidget {
   final List<User> contacts;
+  final Function showOnlineChat;
+  final Function showPinnedChat;
 
-  const DetailedCountElements({Key key, this.contacts}) : super(key: key);
+  const DetailedCountElements({
+    Key key,
+    this.contacts,
+    this.showOnlineChat,
+    this.showPinnedChat,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +20,18 @@ class DetailedCountElements extends StatelessWidget {
       SearchInput(
         icon: Icons.wifi_tethering,
         text: 'Только онлайн',
-        count: contacts
-            .where((contact) => contact.isOnline)
-            .length,
+        count: contacts.where((contact) => contact.isOnline).length,
         addRightMargin: false,
         disabled: true,
+        onTap: showOnlineChat,
       ),
       SearchInput(
         icon: Icons.bookmark_border,
         text: 'Избранные',
-        count: contacts
-            .where((contact) => contact.isPinned)
-            .length,
+        count: contacts.where((contact) => contact.isPinned).length,
         addRightMargin: false,
         disabled: true,
+        onTap: showPinnedChat,
       )
     ]);
   }

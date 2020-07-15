@@ -5,14 +5,26 @@ import 'package:flutter/material.dart';
 
 class RecentContactItem extends StatelessWidget {
   final User user;
-  final bool showScrollEffect;
-  final Animation animation;
+  final double size;
+  final double marginRight;
+  final double sizedBoxHeight;
+  final double textHeight;
+  final double textOpacity;
+  final double borderRadius;
+  final double positionedBottom;
+  final double positionedLeft;
 
   const RecentContactItem({
     Key key,
     this.user,
-    this.showScrollEffect,
-    this.animation,
+    this.size,
+    this.marginRight,
+    this.sizedBoxHeight,
+    this.textHeight,
+    this.textOpacity,
+    this.borderRadius,
+    this.positionedBottom,
+    this.positionedLeft,
   }) : super(key: key);
 
   @override
@@ -21,52 +33,53 @@ class RecentContactItem extends StatelessWidget {
         user.isOnline == true ? OnlineMarker(isLarge: true) : Container();
 
     return Container(
-      margin: EdgeInsets.only(right: 11 + 4 * animation.value),
+      margin: EdgeInsets.only(right: marginRight),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               Container(
-                height: 66 + 20 * animation.value,
-                width: 66 + 20 * animation.value,
+                height: size,
+                width: size,
                 decoration: BoxDecoration(
                   image: DecorationImage(image: NetworkImage(user.imgUrl)),
-                  borderRadius: showScrollEffect
-                      ? BorderRadius.circular(25)
-                      : BorderRadius.circular(33),
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
               ),
               onlineMarker,
-              showScrollEffect
-                  ? Container()
-                  : Positioned(
-                      bottom: -11,
-                      left: 28,
-                      child: Container(
-                        height: 23,
-                        width: 35,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF719CF7),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        child: Text("${user.popularity}%",
-                            style: kUserPopularityStyle),
-                      ),
-                    )
+              Positioned(
+                bottom: -11,
+                left: 28,
+                child: Opacity(
+                  opacity: (size == 86) && (textHeight == 20) ? 1 : 0,
+                  child: Container(
+                    height: 23,
+                    width: 35,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF719CF7),
+                      borderRadius: BorderRadius.circular(9),
+                    ),
+                    child: Text("${user.popularity}%",
+                        style: kUserPopularityStyle),
+                  ),
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 15.0 * animation.value),
-          Container(
-            height: 20 * animation.value,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                user.firstName,
-                style: kRecentContactsBottomTextStyle,
+          SizedBox(height: sizedBoxHeight),
+          Opacity(
+            opacity: textOpacity,
+            child: Container(
+              height: textHeight,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  user.firstName,
+                  style: kRecentContactsBottomTextStyle,
+                ),
               ),
             ),
           ),

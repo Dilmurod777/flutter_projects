@@ -6,43 +6,46 @@ import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
   final User user;
-  final bool showScrollEffect;
-  final Animation animation;
+  final double size;
+  final double marginRight;
+  final double sizedBoxHeight;
+  final double textHeight;
+  final double textOpacity;
+  final double borderRadius;
+  final double positionedBottom;
+  final double positionedLeft;
 
   const MyProfile({
     Key key,
     this.user,
-    this.showScrollEffect,
-    this.animation,
+    this.size,
+    this.marginRight,
+    this.sizedBoxHeight,
+    this.textHeight,
+    this.textOpacity,
+    this.borderRadius,
+    this.positionedBottom,
+    this.positionedLeft,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 12 + 4 * animation.value),
+      margin: EdgeInsets.only(right: marginRight),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               Container(
-                height: 66 + 20 * animation.value,
-                width: 66 + 20 * animation.value,
+                height: size,
+                width: size,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(user.imgUrl),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: showScrollEffect
-                      ? BorderRadius.circular(25)
-                      : BorderRadius.circular(33),
-                ),
+                    image: DecorationImage(image: NetworkImage(user.imgUrl)),
+                    borderRadius: BorderRadius.circular(borderRadius)),
                 child: ClipRRect(
-                  borderRadius: showScrollEffect
-                      ? BorderRadius.circular(25)
-                      : BorderRadius.circular(33),
+                  borderRadius: BorderRadius.circular(borderRadius),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                     child: Container(
@@ -54,8 +57,8 @@ class MyProfile extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: -11 + 32.5 * (1 - animation.value),
-                left: 11 + 10 * animation.value,
+                bottom: positionedBottom,
+                left: positionedLeft,
                 child: Container(
                   height: 23,
                   width: 44,
@@ -75,14 +78,17 @@ class MyProfile extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 15.0 * animation.value),
-          Container(
-            height: 20 * animation.value,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                'Новых лайков',
-                style: kRecentContactsBottomTextStyle,
+          SizedBox(height: sizedBoxHeight),
+          Opacity(
+            opacity: textOpacity,
+            child: Container(
+              height: textHeight,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'Новых лайков',
+                  style: kRecentContactsBottomTextStyle,
+                ),
               ),
             ),
           ),

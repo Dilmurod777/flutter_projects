@@ -10,6 +10,8 @@ class SearchBar extends StatefulWidget {
   final List<User> contacts;
   final bool showDetailedCount;
   final Function setShowDetailedCount;
+  final Function showOnlineChat;
+  final Function showPinnedChat;
   final Function onSearchChange;
   final TextEditingController searchController;
   final GlobalKey<AnimatedListState> listKey;
@@ -20,6 +22,8 @@ class SearchBar extends StatefulWidget {
     this.contacts,
     this.showDetailedCount,
     this.setShowDetailedCount,
+    this.showOnlineChat,
+    this.showPinnedChat,
     this.onSearchChange,
     this.searchController,
   }) : super(key: key);
@@ -68,7 +72,7 @@ class _SearchBarState extends State<SearchBar> {
                   showDetailedCount: widget.showDetailedCount,
                   onChange: widget.onSearchChange,
                   onSearchFocused: toggleSearchFocusedHandler,
-                  onToggleShowDetailedCount: widget.setShowDetailedCount,
+                  onTap: widget.setShowDetailedCount,
                   isSearchFocused: isSearchFocused,
                   controller: widget.searchController,
                 ),
@@ -83,7 +87,11 @@ class _SearchBarState extends State<SearchBar> {
           AnimatedSwitcher(
             duration: Duration(milliseconds: 350),
             child: widget.showDetailedCount
-                ? DetailedCountElements(contacts: widget.contacts)
+                ? DetailedCountElements(
+                    contacts: widget.contacts,
+                    showOnlineChat: widget.showOnlineChat,
+                    showPinnedChat: widget.showPinnedChat,
+                  )
                 : Container(),
           ),
         ],

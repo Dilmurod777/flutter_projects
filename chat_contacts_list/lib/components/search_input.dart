@@ -12,7 +12,7 @@ class SearchInput extends StatelessWidget {
   final bool showDetailedCount;
   final Function onChange;
   final Function onSearchFocused;
-  final Function onToggleShowDetailedCount;
+  final Function onTap;
   final TextEditingController controller;
 
   const SearchInput({
@@ -26,7 +26,7 @@ class SearchInput extends StatelessWidget {
     this.showDetailedCount = false,
     this.onChange,
     this.onSearchFocused,
-    this.onToggleShowDetailedCount,
+    this.onTap,
     this.controller,
   }) : super(key: key);
 
@@ -34,7 +34,7 @@ class SearchInput extends StatelessWidget {
     return Container(
       height: 39,
       margin: this.addRightMargin
-          ? EdgeInsets.only(right: 7)
+          ? EdgeInsets.only(right: 7, bottom: 7)
           : EdgeInsets.only(bottom: 7),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -48,9 +48,12 @@ class SearchInput extends StatelessWidget {
             onChanged: (value) {
               this.onChange(value);
             },
-            onTap: (){
-//              this.onSearchFocused();
-              this.onToggleShowDetailedCount(true);
+            onTap: () {
+              if (this.disabled) {
+                this.onTap();
+              } else {
+                this.onTap(true);
+              }
             },
             readOnly: this.disabled,
             decoration: InputDecoration(
@@ -77,7 +80,7 @@ class SearchInput extends StatelessWidget {
                       }
 
                       onSearchFocused();
-                      onToggleShowDetailedCount(false);
+                      onTap(false);
                     },
                     child: Container(
                       width: 23,

@@ -11,8 +11,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   List<User> _contactsList = [];
   List<User> _searchedList = [];
   User _myProfileData;
@@ -32,23 +31,15 @@ class _HomeScreenState extends State<HomeScreen>
         _searchedList = _contactsList;
       });
     } else {
-      final firstNameSearch = _contactsList
-          .where((contact) => contact.firstName.toLowerCase().contains(value))
-          .toList();
-      final lastNameSearch = _contactsList
-          .where((contact) => contact.lastName.toLowerCase().contains(value))
-          .toList();
-      final lastMessageSearch = _contactsList
-          .where((contact) =>
-              contact.history.last.text.toLowerCase().contains(value))
-          .toList();
+      final firstNameSearch =
+          _contactsList.where((contact) => contact.firstName.toLowerCase().contains(value)).toList();
+      final lastNameSearch =
+          _contactsList.where((contact) => contact.lastName.toLowerCase().contains(value)).toList();
+      final lastMessageSearch =
+          _contactsList.where((contact) => contact.history.last.text.toLowerCase().contains(value)).toList();
 
       this.setState(() {
-        _searchedList = [
-          ...firstNameSearch,
-          ...lastNameSearch,
-          ...lastMessageSearch
-        ].toSet().toList();
+        _searchedList = [...firstNameSearch, ...lastNameSearch, ...lastMessageSearch].toSet().toList();
       });
     }
   }
@@ -61,10 +52,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   scrollHandler() async {
     _scrollController.addListener(() {
-      if ((_scrollController.position.pixels -
-                  _scrollController.position.maxScrollExtent)
-              .abs() >
-          10) {
+      if ((_scrollController.position.pixels - _scrollController.position.maxScrollExtent).abs() > 10) {
         this.setState(() {
           scrollPrevPos = scrollCurPos;
           scrollCurPos = _scrollController.position.pixels.toDouble();
@@ -109,10 +97,7 @@ class _HomeScreenState extends State<HomeScreen>
     List<User> offlineContacts = [];
 
     _contactsList.forEach((contact) => {
-          if (contact.isOnline)
-            {onlineContacts.add(contact)}
-          else
-            {offlineContacts.add(contact)}
+          if (contact.isOnline) {onlineContacts.add(contact)} else {offlineContacts.add(contact)}
         });
 
     this.setState(() {
@@ -125,10 +110,7 @@ class _HomeScreenState extends State<HomeScreen>
     List<User> unpinnedContacts = [];
 
     _contactsList.forEach((contact) => {
-          if (contact.isPinned)
-            {pinnedContacts.add(contact)}
-          else
-            {unpinnedContacts.add(contact)}
+          if (contact.isPinned) {pinnedContacts.add(contact)} else {unpinnedContacts.add(contact)}
         });
 
     this.setState(() {

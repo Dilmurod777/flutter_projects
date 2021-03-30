@@ -1,0 +1,19 @@
+{
+  "favouriteMovies": "Favorite Movies",
+  "language": "Language",
+  "feedback": "Feedback",
+  "about": "About",
+  "popular": "Popular",
+  "now": "Now",
+  "soon": "Soon",
+  "okay": "Okay",
+  "aboutDescription": "This product uses the IMDB API but is not end certified by IMDB. This app is developed for education purpose.",
+  "retry": "Retry",
+  "somethingWentWrong": "Something went wrong...",
+  "checkNetwork": "Please check your network connection and press Retry button or put in as a bug by pressing Feedback button.",
+  "noMovies": "Sorry, no movies under this sections.",
+  "cast": "Cast",
+  "watchTrailers": "Watch Trailers",
+  "noMovieSearched": "No movies found, please search with another word.",
+  "noFavoriteMovies": "No Favorite Movies."
+}

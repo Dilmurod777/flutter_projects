@@ -1,0 +1,19 @@
+{
+  "favouriteMovies": "Películas favoritas",
+  "language": "Idioma",
+  "feedback": "Acerca de",
+  "about": "Realimentação",
+  "popular": "Popular",
+  "now": "Amora",
+  "soon": "Pronto",
+  "okay": "Bueno",
+  "aboutDescription": "Este produto usa a API IMDB, mas não é certificado pelo IMDB. Este aplicativo foi desenvolvido para fins educacionais.",
+  "retry": "Rever",
+  "somethingWentWrong": "Algo deu errado ...",
+  "checkNetwork": "Verifique sua conexão de rede e pressione o botão Repetir ou coloque como um bug pressionando o botão Feedback.",
+  "noMovies": "Desculpe, nenhum filme nestas seções.",
+  "cast": "Elenco",
+  "watchTrailers": "Ver trailers",
+  "noMovieSearched": "Nenhum filme encontrado, por favor pesquise com outra palavra.",
+  "noFavoriteMovies": "Nenhum filme favorito."
+}

@@ -4,7 +4,6 @@ import 'package:imdb_movie_app/common/constants/routes_constants.dart';
 import 'package:imdb_movie_app/common/constants/translation_constants.dart';
 import 'package:imdb_movie_app/presentation/blocs/videos/videos_bloc.dart';
 import 'package:imdb_movie_app/presentation/journeys/watch_video/watch_video_arguments.dart';
-import 'package:imdb_movie_app/presentation/journeys/watch_video/watch_video_screen.dart';
 import 'package:imdb_movie_app/presentation/widgets/button.dart';
 
 class VideosWidget extends StatelessWidget {

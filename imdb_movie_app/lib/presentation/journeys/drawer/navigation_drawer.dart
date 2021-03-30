@@ -6,9 +6,9 @@ import 'package:imdb_movie_app/common/constants/languages.dart';
 import 'package:imdb_movie_app/common/constants/size_constants.dart';
 import 'package:imdb_movie_app/common/constants/translation_constants.dart';
 import 'package:imdb_movie_app/presentation/blocs/language/language_bloc.dart';
+import 'package:imdb_movie_app/presentation/blocs/login/login_bloc.dart';
 import 'package:imdb_movie_app/presentation/journeys/drawer/navigation_expanded_list_item.dart';
 import 'package:imdb_movie_app/presentation/journeys/drawer/navigation_list_item.dart';
-import 'package:imdb_movie_app/presentation/journeys/favorite/favorite_screen.dart';
 import 'package:imdb_movie_app/presentation/widgets/app_dialog.dart';
 import 'package:imdb_movie_app/presentation/widgets/logo.dart';
 import 'package:wiredash/wiredash.dart';
@@ -89,6 +89,21 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 _showDialog(context);
               },
+            ),
+            BlocListener<LoginBloc, LoginState>(
+              listenWhen: (previous, current) => current is LogoutSuccess,
+              listener: (context, state) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteList.initial,
+                  (route) => false,
+                );
+              },
+              child: NavigationListItem(
+                title: TranslationConstants.logout.t(context),
+                onPressed: () {
+                  BlocProvider.of<LoginBloc>(context).add(LogoutEvent());
+                },
+              ),
             )
           ],
         ),

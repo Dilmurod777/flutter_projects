@@ -7,13 +7,12 @@ import 'package:imdb_movie_app/common/screenutil/screenutil.dart';
 import 'package:imdb_movie_app/di/get_it.dart';
 import 'package:imdb_movie_app/presentation/app_localizations.dart';
 import 'package:imdb_movie_app/presentation/blocs/language/language_bloc.dart';
+import 'package:imdb_movie_app/presentation/blocs/login/login_bloc.dart';
 import 'package:imdb_movie_app/presentation/fade_page_route_builder.dart';
 import 'package:imdb_movie_app/presentation/routes.dart';
 import 'package:imdb_movie_app/presentation/themes/app_color.dart';
 import 'package:imdb_movie_app/presentation/themes/theme_text.dart';
 import 'package:imdb_movie_app/presentation/wiredash_app.dart';
-
-import 'journeys/home/home_screen.dart';
 
 class MovieApp extends StatefulWidget {
   @override
@@ -21,28 +20,33 @@ class MovieApp extends StatefulWidget {
 }
 
 class _MovieAppState extends State<MovieApp> {
+  LoginBloc _loginBloc;
   LanguageBloc _languageBloc;
   dynamic _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
+    _loginBloc = getItInstance<LoginBloc>();
     _languageBloc = getItInstance<LanguageBloc>();
     _languageBloc.add(LoadPreferredLanguageEvent());
   }
 
   @override
   void dispose() {
-    _languageBloc.close();
+    _loginBloc?.close();
+    _languageBloc?.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init();
-
-    return BlocProvider<LanguageBloc>.value(
-      value: _languageBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LanguageBloc>.value(value: _languageBloc),
+        BlocProvider<LoginBloc>.value(value: _loginBloc),
+      ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
           if (state is LanguageLoaded) {

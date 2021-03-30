@@ -6,7 +6,6 @@ import 'package:imdb_movie_app/common/constants/size_constants.dart';
 import 'package:imdb_movie_app/data/core/api_constants.dart';
 import 'package:imdb_movie_app/domain/entities/movie_entity.dart';
 import 'package:imdb_movie_app/presentation/journeys/movie_detail/movie_detail_arguments.dart';
-import 'package:imdb_movie_app/presentation/journeys/movie_detail/movie_detail_screen.dart';
 import 'package:imdb_movie_app/presentation/themes/theme_text.dart';
 
 class SearchMovieCard extends StatelessWidget {

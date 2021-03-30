@@ -15,5 +15,15 @@
   "cast": "Elenco",
   "watchTrailers": "Ver trailers",
   "noMovieSearched": "Nenhum filme encontrado, por favor pesquise com outra palavra.",
-  "noFavoriteMovies": "Nenhum filme favorito."
+  "noFavoriteMovies": "Nenhum filme favorito.",
+  "username": "Nombre de usuario",
+  "password": "Contraseña",
+  "loginToMovieApp": "Inicie sesión en la aplicación de películas a través de TMDB",
+  "signIn": "Registrarse",
+  "logout": "Cerrar sesión",
+  "wrongUsernamePassword": "El nombre de usuario o la identificación de correo electrónico no es válido",
+  "noNetwork": "No hay conexion de red",
+  "sessionDenied": "Sesión denegada",
+  "enterTMDBUsername": "Ingrese el nombre de usuario de TMDB aquí ...",
+  "enterPassword": "Ingrese la contraseña aquí"
 }
